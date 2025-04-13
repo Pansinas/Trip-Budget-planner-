@@ -8,7 +8,7 @@ from fpdf import FPDF
 import base64
 
 # Set up the page
-st.set_page_config(page_title="🧳 Smart Travel Planner", layout="wide")
+st.set_page_config(page_title="🛫 Smart Travel Planner", layout="wide")
 
 # Custom light purple transparent-style UI
 st.markdown("""
@@ -149,7 +149,7 @@ agents = [
 crew = TravelCrew(agents)
 
 # Main Content
-st.title("🧳 Smart Travel Planner")
+st.title("🛫 Smart Travel Planner")
 st.markdown("Design your dream vacation with smart AI travel agents.")
 st.markdown("---")
 
@@ -159,7 +159,11 @@ with st.form("trip_form"):
     with col1:
         from_location = st.text_input("From", "New York")
         to = st.text_input("To", "Paris")
-        dates = st.text_input("Travel Dates", "June 1-10, 2025")
+        date_range = st.date_input("Select Travel Dates", [])
+        if isinstance(date_range, list) and len(date_range) == 2:
+            dates = f"{date_range[0].strftime('%B %d, %Y')} - {date_range[1].strftime('%B %d, %Y')}"
+        else:
+            dates = "Not selected"
     with col2:
         budget = st.number_input("Budget ($)", value=1500)
         travelers = st.number_input("Travelers", min_value=1, value=2)
@@ -206,7 +210,7 @@ if submitted and api_key:
 
 # Trip History
 if st.session_state.history:
-    st.markdown("### 🕓 Previous Plans")
+    st.markdown("### 🖓 Previous Plans")
     for timestamp, plan in reversed(st.session_state.history[-3:]):
         with st.expander(f"🗓️ {timestamp}"):
             for role, res in plan.items():
